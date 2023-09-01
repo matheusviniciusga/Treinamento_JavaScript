@@ -1,0 +1,95 @@
+const listaAlunos = [];
+
+function calcularMedia(notas) {
+    const somaNotas = notas.reduce((total, nota) => total + nota, 0);
+    return Math.round(somaNotas / notas.length);
+}
+
+function avaliarDesempenho(media) {
+    if (media >= 7) {
+        return "Aprovado";
+    } else if (media >= 5) {
+        return "Em recuperação";
+    } else {
+        return "Reprovado";
+    }
+}
+
+function cadastrarAluno() {
+    const nome = prompt("Digite o nome do aluno:");
+    
+    if (nome) {
+        listaAlunos.push({ nome: nome, notas: [] });
+        console.log(`Aluno ${nome} cadastrado com sucesso!`);
+    } else {
+        console.log("Operação cancelada ou nome inválido.");
+    }
+}
+
+function cadastrarNotas() {
+    const nomeAluno = prompt("Digite o nome do aluno:");
+    const alunoEncontrado = listaAlunos.find(aluno => aluno.nome === nomeAluno);
+    
+    if (alunoEncontrado) {
+        for (let i = 1; i <= 3; i++) {
+            const nota = parseFloat(prompt(`Digite a nota ${i} para ${nomeAluno}:`));
+            
+            if (!isNaN(nota)) {
+                alunoEncontrado.notas.push(Math.round(nota));
+            } else {
+                console.log(`Nota ${i} inválida. A nota não será registrada.`);
+            }
+        }
+        
+        console.log(`Notas cadastradas para ${nomeAluno}: ${alunoEncontrado.notas.join(", ")}`);
+    } else {
+        console.log("Aluno não encontrado.");
+    }
+}
+
+function exibirBoletim() {
+    const nomeAluno = prompt("Digite o nome do aluno:");
+    const alunoEncontrado = listaAlunos.find(aluno => aluno.nome === nomeAluno);
+    
+    if (alunoEncontrado) {
+        const media = calcularMedia(alunoEncontrado.notas);
+        const status = avaliarDesempenho(media);
+        
+        console.log(`Boletim de ${nomeAluno}:`);
+        console.log(`Notas: ${alunoEncontrado.notas.join(", ")}`);
+        console.log(`Média: ${media}`);
+        console.log(`Status: ${status}`);
+    } else {
+        console.log("Aluno não encontrado.");
+    }
+}
+
+function exibirMenu() {
+    while (true) {
+        const opcao = parseInt(prompt(
+            "Escolha uma opção:\n" +
+            "1. Cadastrar Aluno\n" +
+            "2. Cadastrar Notas\n" +
+            "3. Exibir Boletim\n" +
+            "4. Sair"
+        ));
+        
+        switch (opcao) {
+            case 1:
+                cadastrarAluno();
+                break;
+            case 2:
+                cadastrarNotas();
+                break;
+            case 3:
+                exibirBoletim();
+                break;
+            case 4:
+                return;
+            default:
+                console.log("Opção inválida.");
+        }
+    }
+}
+
+exibirMenu();
