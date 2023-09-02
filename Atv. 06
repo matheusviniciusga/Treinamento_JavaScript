@@ -1,0 +1,114 @@
+var biblioteca = [];
+
+function exibirMenu() {
+  console.log("\nMenu Principal\n");
+  console.log("1) Cadastrar Livro");
+  console.log("2) Alterar Livro");
+  console.log("3) Deletar Livro");
+  console.log("4) Realizar Empréstimo de Livro");
+  console.log("5) Sair\n");
+}
+
+function gerarIdUnico() {
+  return '_' + Math.random().toString(36).substr(2, 9);
+}
+
+function cadastrarLivro() {
+  var titulo = prompt("Digite o título do livro: ");
+  var autor = prompt("Digite o autor do livro: ");
+  var id = gerarIdUnico();
+  var emprestado = false;
+
+  var livro = {
+    id: id,
+    titulo: titulo,
+    autor: autor,
+    emprestado: emprestado
+  };
+
+  biblioteca.push(livro);
+  console.log("Livro cadastrado com sucesso!");
+}
+
+// Função para alterar um livro
+function alterarLivro() {
+  var id = prompt("Digite o ID do livro que deseja alterar: ");
+  var livro = encontrarLivroPorId(id);
+
+  if (livro) {
+    var novoTitulo = prompt("Digite o novo título (ou pressione Enter para manter o atual): ");
+    if (novoTitulo !== "") {
+      livro.titulo = novoTitulo;
+    }
+
+    var novoAutor = prompt("Digite o novo autor (ou pressione Enter para manter o atual): ");
+    if (novoAutor !== "") {
+      livro.autor = novoAutor;
+    }
+
+    console.log("\nLivro alterado com sucesso!");
+  } else {
+    console.log("\nLivro não encontrado.");
+  }
+}
+
+function encontrarLivroPorId(id) {
+  for (var i = 0; i < biblioteca.length; i++) {
+    if (biblioteca[i].id === Number(id)) {
+      return biblioteca[i];
+    }
+  }
+  return null;
+}
+
+function deletarLivro() {
+  var id = prompt("Digite o ID do livro que deseja deletar: ");
+  var livro = encontrarLivroPorId(id);
+
+  if (livro) {
+    var index = biblioteca.indexOf(livro);
+    biblioteca.splice(index, 1);
+    console.log("\nLivro deletado com sucesso!");
+  } else {
+    console.log("\nLivro não encontrado.");
+  }
+}
+
+function realizarEmprestimo() {
+  var id = prompt("Digite o ID do livro que deseja emprestar: ");
+  var livro = encontrarLivroPorId(id);
+
+  if (livro) {
+    livro.emprestado = true;
+    console.log("Empréstimo realizado com sucesso!");
+  } else {
+    console.log("Livro não encontrado.");
+  }
+}
+
+var opcao;
+
+do {
+  exibirMenu();
+  opcao = prompt("\nDigite o número da opção desejada: ");
+
+  switch (opcao) {
+    case "1":
+      cadastrarLivro();
+      break;
+    case "2":
+      alterarLivro();
+      break;
+    case "3":
+      deletarLivro();
+      break;
+    case "4":
+      realizarEmprestimo();
+      break;
+    case "5":
+      console.log("Saindo do sistema. Até logo!");
+      break;
+    default:
+      console.log("Opção inválida. Tente novamente.");
+  }
+} while (opcao !== "5");
