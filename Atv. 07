@@ -1,0 +1,69 @@
+let saldo = 1000;
+
+let historicoTransacoes = [];
+
+function exibirMenu() {
+  console.log("Escolha uma opção:");
+  console.log("1. Depositar");
+  console.log("2. Sacar");
+  console.log("3. Ver saldo atual");
+  console.log("4. Ver histórico de transações");
+  console.log("5. Sair");
+}
+
+function registrarTransacao(tipo, valor) {
+  const data = new Date().toLocaleDateString();
+  historicoTransacoes.push({ tipo, valor, data });
+}
+
+while (true) {
+  exibirMenu();
+
+  const escolha = parseInt(prompt("Digite o número da opção desejada:"));
+
+  switch (escolha) {
+    case 1:
+      const valorDeposito = parseFloat(prompt("Digite o valor a depositar:"));
+      if (isNaN(valorDeposito) || valorDeposito <= 0) {
+        console.log("Valor inválido. Tente novamente.");
+      } else {
+        saldo += valorDeposito;
+        registrarTransacao("Depósito", valorDeposito);
+        console.log(`Depósito de R$ ${valorDeposito} realizado com sucesso.`);
+      }
+      break;
+
+    case 2:
+      const valorSaque = parseFloat(prompt("Digite o valor a sacar:"));
+      if (isNaN(valorSaque) || valorSaque <= 0) {
+        console.log("Valor inválido. Tente novamente.");
+      } else if (valorSaque > saldo) {
+        console.log("Saldo insuficiente.");
+      } else {
+        saldo -= valorSaque;
+        registrarTransacao("Saque", valorSaque);
+        console.log(`Saque de R$ ${valorSaque} realizado com sucesso.`);
+      }
+      break;
+
+    case 3:
+      console.log(`Saldo atual: R$ ${saldo}`);
+      break;
+
+    case 4:
+      console.log("Histórico de transações:");
+      for (const transacao of historicoTransacoes) {
+        console.log(
+          `${transacao.tipo} de R$ ${transacao.valor} em ${transacao.data}`
+        );
+      }
+      break;
+
+    case 5:
+      console.log("Saindo do programa.");
+      return;
+
+    default:
+      console.log("Opção inválida. Tente novamente.");
+  }
+}
