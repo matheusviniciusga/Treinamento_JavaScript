@@ -1,0 +1,86 @@
+class ContaBancaria {
+  constructor(agencia, numero, tipo, saldo) {
+    this.agencia = agencia;
+    this.numero = numero;
+    this.tipo = tipo;
+    this._saldo = saldo;
+  }
+
+  get saldo() {
+    return this._saldo;
+  }
+
+  set saldo(novoSaldo) {
+    this._saldo = novoSaldo;
+  }
+
+  sacar(valor) {
+    if (valor > 0 && valor <= this._saldo) {
+      this._saldo -= valor;
+      return `Saque de R$ ${valor} realizado com sucesso. Novo saldo: R$ ${this._saldo}`;
+    } else {
+      return 'Saldo insuficiente para efetuar o saque.';
+    }
+  }
+
+  depositar(valor) {
+    if (valor > 0) {
+      this._saldo += valor;
+      return `Depósito de R$ ${valor} realizado com sucesso. Novo saldo: R$ ${this._saldo}`;
+    } else {
+      return 'Valor de depósito inválido.';
+    }
+  }
+}
+
+class ContaCorrente extends ContaBancaria {
+  constructor(agencia, numero, cartaoCredito, saldo = 0) {
+    super(agencia, numero, 'Conta Corrente', saldo);
+    this._cartaoCredito = cartaoCredito;
+  }
+
+  get cartaoCredito() {
+    return this._cartaoCredito;
+  }
+
+  set cartaoCredito(novoCartaoCredito) {
+    this._cartaoCredito = novoCartaoCredito;
+  }
+}
+
+class ContaPoupanca extends ContaBancaria {
+  constructor(agencia, numero, saldo = 0) {
+    super(agencia, numero, 'Conta Poupança', saldo);
+  }
+}
+
+class ContaUniversitaria extends ContaBancaria {
+  constructor(agencia, numero, saldo = 0) {
+    super(agencia, numero, 'Conta Universitária', saldo);
+  }
+
+  sacar(valor) {
+    if (valor > 0 && valor <= 500) {
+      super.sacar(valor);
+    } else {
+      return 'Limite de saque excedido. O saque máximo é de R$ 500.';
+    }
+  }
+
+const agencia = prompt('Digite a agência:');
+const numero = prompt('Digite o número da conta:');
+const tipo = prompt('Digite o tipo de conta:');
+const saldo = parseFloat(prompt('Digite o saldo inicial:'));
+
+let conta;
+
+if (tipo === 'Conta Corrente') {
+  const cartaoCredito = prompt('Possui cartão de crédito (sim ou não)?') === 'sim';
+  conta = new ContaCorrente(agencia, numero, cartaoCredito, saldo);
+} else if (tipo === 'Conta Poupança') {
+  conta = new ContaPoupanca(agencia, numero, saldo);
+} else if (tipo === 'Conta Universitária') {
+  conta = new ContaUniversitaria(agencia, numero, saldo);
+}
+
+console.log(`Conta criada: ${conta.tipo}, Agência: ${conta.agencia}, Número: ${conta.numero}, Saldo: R$ ${conta.saldo}`);
