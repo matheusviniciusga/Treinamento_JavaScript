@@ -1,0 +1,61 @@
+let produtos = [];
+let pessoas = [];
+
+function gerarNumeroAleatorio(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function exibirMenu() {
+  console.log("Menu:");
+  console.log("1 - Cadastrar Produto");
+  console.log("2 - Cadastrar Pessoa");
+  console.log("3 - Sortear");
+  console.log("4 - Sair");
+}
+
+function cadastrarProduto() {
+  const nomeProduto = prompt("Digite o nome do produto:");
+  produtos.push(nomeProduto);
+  console.log("Produto cadastrado com sucesso!");
+}
+
+function cadastrarPessoa() {
+  const nomePessoa = prompt("Digite o nome da pessoa:");
+  pessoas.push(nomePessoa);
+  console.log("Pessoa cadastrada com sucesso!");
+}
+
+function realizarSorteio() {
+  if (produtos.length === 0 || pessoas.length === 0) {
+    console.log("Cadastre produtos e pessoas antes de realizar o sorteio.");
+    return;
+  }
+
+  const numeroSorteado = gerarNumeroAleatorio(0, produtos.length - 1);
+  const pessoaSorteada = pessoas[gerarNumeroAleatorio(0, pessoas.length - 1)];
+
+  console.log(`Parabéns, ${pessoaSorteada}! Você ganhou: ${produtos[numeroSorteado]}`);
+}
+
+let opcao = 0;
+while (opcao !== 4) {
+  exibirMenu();
+  opcao = parseInt(prompt("Digite a opção desejada:"));
+
+  switch (opcao) {
+    case 1:
+      cadastrarProduto();
+      break;
+    case 2:
+      cadastrarPessoa();
+      break;
+    case 3:
+      realizarSorteio();
+      break;
+    case 4:
+      console.log("Saindo...");
+      break;
+    default:
+      console.log("Opção inválida. Por favor, escolha uma opção válida.");
+  }
+}
