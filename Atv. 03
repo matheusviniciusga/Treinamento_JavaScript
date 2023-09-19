@@ -1,0 +1,16 @@
+function umPalindromo(palavra) {
+    
+    palavra = palavra.toLowerCase();
+    palavra = palavra.replace(/\s/g, "");
+
+    return palavra === palavra.split("").reverse().join("");
+}
+
+const palavras = ["Rir", "Cor", "Azul", "Ana", "Carro", "Neto"];
+  for (let i = 0; i < palavras.length; i++) {
+      if (umPalindromo(palavras[i])) {
+        console.log(`${palavras[i]} é um palíndromo.`);
+      } else {
+          console.log(`${palavras[i]} não é um palíndromo.`);
+      }
+}
