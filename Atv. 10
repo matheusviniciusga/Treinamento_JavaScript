@@ -1,0 +1,72 @@
+function criarMatrizQuadrada(tamanho) {
+    const matriz = [];
+    for (let i = 0; i < tamanho; i++) {
+        matriz.push([]);
+        for (let j = 0; j < tamanho; j++) {
+            matriz[i].push(parseInt(prompt(`Digite o valor para a posição [${i + 1}][${j + 1}]: `)));
+        }
+    }
+    return matriz;
+}
+
+function isQuadradoMagico(matriz) {
+    const tamanho = matriz.length;
+    const n = tamanho * tamanho;
+
+    for (let i = 0; i < tamanho; i++) {
+        if (matriz[i].length !== tamanho) {
+            return false;
+        }
+    }
+
+    const numerosUnicos = new Set();
+
+    let somaReferencia = 0;
+    for (let i = 0; i < tamanho; i++) {
+        somaReferencia += matriz[0][i];
+    }
+
+    for (let i = 0; i < tamanho; i++) {
+        for (let j = 0; j < tamanho; j++) {
+            const num = matriz[i][j];
+            if (num <= 0 || num > n || numerosUnicos.has(num)) {
+                return false;
+            }
+            numerosUnicos.add(num);
+        }
+    }
+
+    for (let i = 0; i < tamanho; i++) {
+        let somaLinha = 0;
+        let somaColuna = 0;
+        for (let j = 0; j < tamanho; j++) {
+            somaLinha += matriz[i][j];
+            somaColuna += matriz[j][i];
+        }
+        if (somaLinha !== somaReferencia || somaColuna !== somaReferencia) {
+            return false;
+        }
+    }
+
+    let somaDiagonalPrincipal = 0;
+    let somaDiagonalSecundaria = 0;
+    for (let i = 0; i < tamanho; i++) {
+        somaDiagonalPrincipal += matriz[i][i];
+        somaDiagonalSecundaria += matriz[i][tamanho - i - 1];
+    }
+
+    return somaDiagonalPrincipal === somaReferencia && somaDiagonalSecundaria === somaReferencia;
+}
+
+const tamanhoMatriz = parseInt(prompt("Digite o tamanho da matriz quadrada: "));
+if (isNaN(tamanhoMatriz) || tamanhoMatriz <= 0) {
+    console.log("Tamanho de matriz inválido.");
+} else {
+    const matrizUsuario = criarMatrizQuadrada(tamanhoMatriz);
+
+    if (isQuadradoMagico(matrizUsuario)) {
+        console.log("True - É um Quadrado Mágico.");
+    } else {
+        console.log("False - Não é um Quadrado Mágico.");
+    }
+}
