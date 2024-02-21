@@ -1,2 +1,2 @@
 # javascript
-Treinamento JavaScript
+Práticas de Lógica com a linguagem JavaScript
